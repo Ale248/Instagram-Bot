@@ -16,12 +16,12 @@ class InstagramBot:
         Initializes an instance of the InstagramBot class.
 
         Args:
-            username:str: Instagram username for a user
-            password:str: Instagram password for a user
+            username (str): Instagram username for a user
+            password (str): Instagram password for a user
 
         Attributes:
-            base_url:str: Instagram's base url
-            driver:Selenium.webdriver.Chrome: Chromedriver used to automate browser actions
+            base_url (str): Instagram's base url
+            driver (Selenium.webdriver.Chrome): Chromedriver used to automate browser actions
 
         """
 
@@ -67,7 +67,7 @@ class InstagramBot:
         Navigate to the provided user's page.
 
         Args:
-            user:str: The username of the user to be navigated to
+            user (str): The username of the user to be navigated to
 
         """
         self.driver.get(self.base_url + user)
@@ -80,8 +80,8 @@ class InstagramBot:
         If user is not provided, will try to follow the first person available on the current page
 
         Args:
-            user:str: The username of the user to be followed/unfollowed
-            unfollow:bool: Boolean whether to unfollow or not
+            user (str): The username of the user to be followed/unfollowed
+            unfollow (bool): Boolean whether to unfollow or not
         """
 
         if user is not None:
@@ -134,7 +134,7 @@ class InstagramBot:
         Returns True if the user provided is a private account, False otherwise.
 
         Args:
-            user:str: The username of the user to check if private account or not
+            user (str): The username of the user to check if private account or not
 
         """
         self.nav_user(user)
@@ -151,7 +151,7 @@ class InstagramBot:
         Likes the oldest post of a user.
 
         Args:
-            user:str: The username of the user to have their oldest post liked
+            user (str): The username of the user to have their oldest post liked
         """
         self.nav_user(user)
         self.driver.implicitly_wait(5)
@@ -192,7 +192,7 @@ class InstagramBot:
         Navigates to the given tag.
 
         Args:
-            tag:str: The tag to be navigated to
+            tag (str): The tag to be navigated to
 
         """
         self.driver.get(self.base_url + 'explore/tags/' + str(tag) + '/')
@@ -200,12 +200,13 @@ class InstagramBot:
         # self.like_and_comment(5)
 
         
-    def like_and_comment(self, num=10):
+    def follow_like_and_comment(self, num=10):
         """
-        Likes and comments a number of posts on the current page starting from the first post.
+        Follow the poster, likes and comments a number of posts on the current page starting from the first post.
+        Used in a hashtag page.
 
         Args:
-            num:int: The number of posts to like and comment 
+            num (int): The number of posts to like and comment
 
         """
         old_df = pd.DataFrame(columns=['url', 'username'])
@@ -276,7 +277,15 @@ class InstagramBot:
         new_df = pd.DataFrame(list(zip(url_list, username_list)), columns=['url', 'username'])
         new_df.to_csv('data.csv')
 
+
     def like_photos(self, user=None, num=10):
+        """
+        Likes a number of photos on a user's page or a hashtag's page.
+
+        Args:
+            user (str): The user to be given the likes to
+            num (int): The number of posts to be liked
+        """
 
         # like button class name = wpO6b
         # image button class name = _9AhH0
@@ -307,6 +316,11 @@ class InstagramBot:
 
 
     def comment_photo(self):
+        """
+        Posts a comment under a post.
+        Has to be on the post's page already.
+
+        """
         comment_num = random.randint(0, 10)
         self.driver.implicitly_wait(5)
         comment_button = self.driver.find_elements_by_css_selector('body > div._2dDPU.vCf6V > div.zZYga > div > article > div.eo2As > section.ltpMr.Slqrh > span._15y0l > button > svg')
