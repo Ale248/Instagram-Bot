@@ -208,6 +208,9 @@ class InstagramBot:
         Args:
             num (int): The number of posts to like and comment
 
+        TODO:
+            update csv correctly (no duplicate)
+
         """
         old_df = pd.DataFrame(columns=['url', 'username'])
 
