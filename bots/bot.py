@@ -203,13 +203,11 @@ class InstagramBot:
     def follow_like_and_comment(self, num=10):
         """
         Follow the poster, likes and comments a number of posts on the current page starting from the first post.
+        Saves the url of the posts liked and commented. And also the username of the poster.
         Used in a hashtag page.
 
         Args:
             num (int): The number of posts to like and comment
-
-        TODO:
-            update csv correctly (no duplicate)
 
         """
         old_df = pd.DataFrame(columns=['url', 'username'])
@@ -217,7 +215,6 @@ class InstagramBot:
         try:
             old_df = pd.read_csv('data.csv', delimiter=',').iloc[:, 1:3]
         except:
-            # old_df = pd.DataFrame(columns=['url', 'username'])
             print('csv file is empty')
 
         print(old_df)
@@ -238,39 +235,32 @@ class InstagramBot:
 
             if current_url not in url_list:
                 print('NEVER BEFORE')
+                url_list.append(self.driver.current_url)
+
+                time.sleep(random.randint(3,7))
+
+                self.driver.implicitly_wait(5)
+
+                current_user = self.driver.find_elements_by_css_selector('body > div._2dDPU.vCf6V > div.zZYga > div > article > header > div.o-MQd > div.PQo_0 > div.e1e1d > a')[0].text
+                username_list.append(current_user)
+
+                follow_button = self.driver.find_elements_by_css_selector('body > div._2dDPU.vCf6V > div.zZYga > div > article > header > div.o-MQd.z8cbW > div.PQo_0.RqtMr > div.bY2yH > button')[0]
+                print(follow_button.text)
+                if follow_button.text != 'Following':
+                    follow_button.click()
+                    print(current_user + ' followed!')
+                else:
+                    print(current_user + ' already followed!')
+
+                time.sleep(random.randint(5, 10))
+
+                # if already liked, no need to comment (assumes post has been commented before)
+                liked_before = self.click_like()
+                if not liked_before:
+                    time.sleep(random.randint(8, 15))
+                    self.comment_photo()
             else:
                 print('FOUND BEFORE')
-
-            url_list.append(self.driver.current_url)
-
-            time.sleep(random.randint(3,7))
-
-            self.driver.implicitly_wait(5)
-
-            current_user = self.driver.find_elements_by_css_selector('body > div._2dDPU.vCf6V > div.zZYga > div > article > header > div.o-MQd > div.PQo_0 > div.e1e1d > a')[0].text
-            # body > div._2dDPU.vCf6V > div.zZYga > div > article > header > div.o-MQd > div.PQo_0 > div.e1e1d > a
-            # /html/body/div[4]/div[2]/div/article/header/div[2]/div[1]/div[1]/a
-            # print(current_user)
-            username_list.append(current_user)
-
-            # self.follow_user_action()
-            follow_button = self.driver.find_elements_by_css_selector('body > div._2dDPU.vCf6V > div.zZYga > div > article > header > div.o-MQd.z8cbW > div.PQo_0.RqtMr > div.bY2yH > button')[0]
-            print(follow_button.text)
-            if follow_button.text != 'Following':
-                follow_button.click()
-                print(current_user + ' followed!')
-            else:
-                print(current_user + ' already followed!')
-
-            time.sleep(random.randint(5, 10))
-
-            # self.click_like()
-            # if already liked, no need to comment (assumes post has been commented before)
-
-            liked_before = self.click_like()
-            if not liked_before:
-                time.sleep(random.randint(8, 15))
-                self.comment_photo()
 
             next_button = self.driver.find_elements_by_xpath('//a[contains(text(), "Next")]')
             if len(next_button) != 0:
@@ -368,7 +358,7 @@ if __name__ == '__main__':
 
     for hashtag in hashtags:
         ig_bot.nav_tag(hashtag)
-        ig_bot.like_and_comment(2)
+        ig_bot.follow_like_and_comment(2)
 
     # try:
     #     old_df = pd.read_csv('data.csv', delimiter=',')
