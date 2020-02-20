@@ -204,7 +204,7 @@ class InstagramBot:
         """
         Follow the poster, likes and comments a number of posts on the current page starting from the first post.
         Saves the url of the posts liked and commented. And also the username of the poster.
-        Used in a hashtag page.
+        Used in a hashtag page. (Use nav_tag first before this function)
 
         Args:
             num (int): The number of posts to like and comment
@@ -216,8 +216,6 @@ class InstagramBot:
             old_df = pd.read_csv('data.csv', delimiter=',').iloc[:, 1:3]
         except:
             print('csv file is empty')
-
-        print(old_df)
 
         url_list = list(old_df['url'])
         username_list = list(old_df['username'])
@@ -349,8 +347,7 @@ if __name__ == '__main__':
     username = cparser.get('AUTH', 'USERNAME')
     password = cparser.get('AUTH', 'PASSWORD')
 
-    # hashtags = ['pcgaming', 'gaming', 'travelgram', 'cool', 'awesome']
-    hashtags = ['pcgaming']
+    hashtags = ['pcgaming', 'gaming', 'travelgram', 'cool', 'awesome']
 
     ig_bot = InstagramBot(username, password)
 
@@ -358,24 +355,7 @@ if __name__ == '__main__':
 
     for hashtag in hashtags:
         ig_bot.nav_tag(hashtag)
-        ig_bot.follow_like_and_comment(2)
-
-    # try:
-    #     old_df = pd.read_csv('data.csv', delimiter=',')
-    # except:
-        # print("file empty")
-        # print(old_df.empty)
-        
-    # d = {'col1': [1, 2], 'col2': [3, 4]}
-    # df = pd.DataFrame(data=d)
-    # df.to_csv('data.csv', mode='a', header=False)
-    # print(df.empty)
-
-    # df = pd.read_csv('data.csv', delimiter=',')
-    # print(df)
-
-    
-    # print(old_df.empty)
+        ig_bot.follow_like_and_comment(10)
 
 
     print('done!')
