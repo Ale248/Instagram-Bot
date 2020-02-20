@@ -16,7 +16,7 @@ pip3 install pandas
 ```
 
 ## Usage
-Run `config_setup.py` if this is the first time to put in the username and password for Instagram,
+Run `config_setup.py` if this is the first time to put in the username and password for Instagram, (you can also update the existing config with this script)
 ```python
 python3 config_setup.py
 ```
