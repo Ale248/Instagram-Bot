@@ -322,13 +322,24 @@ class InstagramBot:
         if len(comment_box) != 0: 
             comment_list = [
                 'Really cool!', 
+                'Good shot!'
                 'Nice work :)', 
-                'Good shot!', 
                 'Very amazing!', 
                 'Definitely one of the best!',
                 'I love it!',
                 'It\'s so good!',
-                'Great shot!']
+                'Great shot!',
+                'Omg, wow!',
+                'Sooo pretty!',
+                'Breath-taking!',
+                'So much talent here.',
+                'That\'s so cute!',
+                'Super cool!',
+                'Cuteee!',
+                'Hella bomb.',
+                'That\'s crazy :D',
+                'Loads of love for that!',
+                'Great picture!']
             comment = random.choice(comment_list)
             comment_box[0].send_keys(comment)
             time.sleep(random.randint(1, 3))
@@ -344,10 +355,10 @@ if __name__ == '__main__':
     cparser = configparser.ConfigParser()
     cparser.read(config_path)
 
-    username = cparser.get('AUTH', 'USERNAME')
-    password = cparser.get('AUTH', 'PASSWORD')
+    username = cparser.get('AUTH', 'username')
+    password = cparser.get('AUTH', 'password')
 
-    hashtags = ['pcgaming', 'gaming', 'travelgram', 'cool', 'awesome']
+    hashtags = ['pcgaming', 'gaming', 'travelgram', 'cool', 'awesome', 'drawing', 'photography', 'selfie', 'city', 'explore', 'vacation', 'art', 'design']
 
     ig_bot = InstagramBot(username, password)
 
