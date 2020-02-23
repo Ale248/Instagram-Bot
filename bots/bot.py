@@ -7,6 +7,8 @@ import time
 import configparser
 import pandas as pd
 import random
+import logging
+import traceback
 
 
 class InstagramBot:
@@ -322,7 +324,7 @@ class InstagramBot:
         if len(comment_box) != 0: 
             comment_list = [
                 'Really cool!', 
-                'Good shot!'
+                'Good shot!',
                 'Nice work :)', 
                 'Very amazing!', 
                 'Definitely one of the best!',
@@ -360,14 +362,17 @@ if __name__ == '__main__':
 
     hashtags = ['pcgaming', 'gaming', 'travelgram', 'cool', 'awesome', 'drawing', 'photography', 'selfie', 'city', 'explore', 'vacation', 'art', 'design']
 
-    ig_bot = InstagramBot(username, password)
+    try:
+        ig_bot = InstagramBot(username, password)
 
-    ig_bot.login()
+        ig_bot.login()
 
-    for hashtag in hashtags:
-        ig_bot.nav_tag(hashtag)
-        ig_bot.follow_like_and_comment(10)
-
+        for hashtag in hashtags:
+            ig_bot.nav_tag(hashtag)
+            ig_bot.follow_like_and_comment(10)
+    except Exception as e:
+        logging.error(traceback.format_exc())
+        
 
     print('done!')
 
